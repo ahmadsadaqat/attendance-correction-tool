@@ -20,6 +20,7 @@ frappe.ui.form.on("Attendance Correction Run", {
 			);
 			frm.add_custom_button(__("Preview Corrections"), async () => {
 				await frm.call({
+					doc: frm.doc,
 					method: "preview",
 					freeze: true,
 					freeze_message: __("Finding auto-marked absences and matching check-ins..."),
@@ -33,7 +34,11 @@ frappe.ui.form.on("Attendance Correction Run", {
 				frappe.confirm(
 					__("This will cancel each eligible auto-marked absence and create a corrected submitted Attendance from its check-ins. Continue?"),
 					async () => {
-						await frm.call({ method: "enqueue_correction", freeze: true });
+						await frm.call({
+							doc: frm.doc,
+							method: "enqueue_correction",
+							freeze: true,
+						});
 						await frm.reload_doc();
 					},
 				);
