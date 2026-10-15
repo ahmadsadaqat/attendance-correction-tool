@@ -16,6 +16,35 @@ test_ignore = ["Attendance", "Company", "Employee", "Shift Type", "User"]
 
 
 class TestAttendanceCorrectionRun(FrappeTestCase):
+	def test_preview_explains_why_an_absence_is_not_eligible(self):
+		correction_run = frappe._dict(
+			company="Test Company",
+			from_date="2026-10-15",
+			to_date="2026-10-15",
+			employee=None,
+			shift=None,
+		)
+		service = AttendanceCorrectionService(correction_run)
+		service.repository.get_absences_in_scope = MagicMock(
+			return_value=[
+				frappe._dict(
+					name="HR-ATT-TEST",
+					employee="HR-EMP-TEST",
+					employee_name="Test Employee",
+					attendance_date="2026-10-15",
+					status="Absent",
+					shift=None,
+					is_auto_absence=False,
+				)
+			]
+		)
+
+		rows = service._evaluate_scope()
+
+		self.assertEqual(rows[0]["result"], "Skipped")
+		self.assertIn("no Shift", rows[0]["details"])
+		self.assertIn("not identified as an HRMS auto-marked absence", rows[0]["details"])
+
 	def test_enqueue_returns_stable_job_id_when_queued_after_commit(self):
 		correction_run = MagicMock()
 		correction_run.status = "Previewed"

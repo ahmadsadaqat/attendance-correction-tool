@@ -9,13 +9,12 @@ DUPLICATE_SKIP_COMMENT = "%already marked for the date%"
 
 
 class AttendanceCorrectionRepository:
-	def get_auto_absences(self, correction_run) -> list[frappe._dict]:
+	def get_absences_in_scope(self, correction_run) -> list[frappe._dict]:
 		filters = {
 			"company": correction_run.company,
 			"attendance_date": ["between", [correction_run.from_date, correction_run.to_date]],
 			"docstatus": 1,
 			"status": "Absent",
-			"shift": ["is", "set"],
 		}
 		if correction_run.employee:
 			filters["employee"] = correction_run.employee
@@ -36,9 +35,6 @@ class AttendanceCorrectionRepository:
 			],
 			order_by="attendance_date, employee",
 		)
-		if not attendances:
-			return []
-
 		auto_attendance_names: set[str] = set()
 		for names in create_batch([row.name for row in attendances], 500):
 			auto_attendance_names.update(
@@ -54,7 +50,10 @@ class AttendanceCorrectionRepository:
 				)
 			)
 
-		return [row for row in attendances if row.name in auto_attendance_names]
+		for attendance in attendances:
+			attendance.is_auto_absence = attendance.name in auto_attendance_names
+
+		return attendances
 
 	def get_eligible_checkins(self, attendance: frappe._dict) -> list[frappe._dict]:
 		attendance_date = getdate(attendance.attendance_date)

@@ -14,6 +14,10 @@ frappe.ui.form.on("Attendance Correction Run", {
 		}
 
 		if (frm.doc.status === "Draft") {
+			frm.set_intro(
+				__("After saving, click Preview Corrections. Saving this document does not start a correction."),
+				"blue",
+			);
 			frm.add_custom_button(__("Preview Corrections"), async () => {
 				await frm.call({
 					method: "preview",

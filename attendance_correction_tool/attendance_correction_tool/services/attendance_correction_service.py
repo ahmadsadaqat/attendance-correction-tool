@@ -131,8 +131,7 @@ class AttendanceCorrectionService:
 
 	def _evaluate_scope(self) -> list[dict]:
 		rows = []
-		for attendance in self.repository.get_auto_absences(self.correction_run):
-			logs = self.repository.get_eligible_checkins(attendance)
+		for attendance in self.repository.get_absences_in_scope(self.correction_run):
 			base_row = {
 				"original_attendance": attendance.name,
 				"employee": attendance.employee,
@@ -140,8 +139,29 @@ class AttendanceCorrectionService:
 				"attendance_date": attendance.attendance_date,
 				"shift": attendance.shift,
 				"original_status": attendance.status,
-				"checkin_count": len(logs),
+				"checkin_count": 0,
 			}
+			exclusion_reasons = []
+			if not attendance.shift:
+				exclusion_reasons.append(
+					_("Attendance has no Shift, so matching check-ins cannot be calculated safely.")
+				)
+			if not attendance.is_auto_absence:
+				exclusion_reasons.append(
+					_("Attendance was not identified as an HRMS auto-marked absence.")
+				)
+			if exclusion_reasons:
+				rows.append(
+					{
+						**base_row,
+						"result": "Skipped",
+						"details": " ".join(exclusion_reasons),
+					}
+				)
+				continue
+
+			logs = self.repository.get_eligible_checkins(attendance)
+			base_row["checkin_count"] = len(logs)
 			if not logs:
 				rows.append(
 					{

@@ -124,7 +124,7 @@
   {
    "fieldname": "scanned_count",
    "fieldtype": "Int",
-   "label": "Auto Absences Scanned",
+   "label": "Absences Scanned",
    "read_only": 1
   },
   {
