@@ -16,6 +16,11 @@ test_ignore = ["Attendance", "Company", "Employee", "Shift Type", "User"]
 
 
 class TestAttendanceCorrectionRun(FrappeTestCase):
+	def test_name_is_not_configured_as_title_field(self):
+		# `name` is a standard field, not a DocField. Using it as title_field makes
+		# Frappe v15's list view build a Subject column with an undefined DocField.
+		self.assertNotEqual(frappe.get_meta("Attendance Correction Run").title_field, "name")
+
 	def test_preview_explains_why_an_absence_is_not_eligible(self):
 		correction_run = frappe._dict(
 			company="Test Company",

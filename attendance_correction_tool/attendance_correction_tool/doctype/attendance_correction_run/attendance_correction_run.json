@@ -211,6 +211,5 @@
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "name",
  "track_changes": 1
 }
