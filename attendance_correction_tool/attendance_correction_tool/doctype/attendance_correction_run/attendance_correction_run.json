@@ -1,0 +1,216 @@
+{
+ "actions": [],
+ "autoname": "format:ACR-{YYYY}-{#####}",
+ "creation": "2026-10-15 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "scope_section",
+  "company",
+  "from_date",
+  "to_date",
+  "scope_column_break",
+  "employee",
+  "shift",
+  "run_section",
+  "status",
+  "requested_by",
+  "requested_at",
+  "completed_at",
+  "summary_section",
+  "scanned_count",
+  "total_candidates",
+  "summary_column_break",
+  "corrected_count",
+  "skipped_count",
+  "failed_count",
+  "results_section",
+  "results",
+  "error_log"
+ ],
+ "fields": [
+  {
+   "fieldname": "scope_section",
+   "fieldtype": "Section Break",
+   "label": "Correction Scope"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "read_only_depends_on": "eval:doc.status!='Draft'",
+   "reqd": 1
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "From Date",
+   "read_only_depends_on": "eval:doc.status!='Draft'",
+   "reqd": 1
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "To Date",
+   "read_only_depends_on": "eval:doc.status!='Draft'",
+   "reqd": 1
+  },
+  {
+   "fieldname": "scope_column_break",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Leave blank to include all employees in the company.",
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "read_only_depends_on": "eval:doc.status!='Draft'"
+  },
+  {
+   "description": "Leave blank to include all shifts.",
+   "fieldname": "shift",
+   "fieldtype": "Link",
+   "label": "Shift",
+   "options": "Shift Type",
+   "read_only_depends_on": "eval:doc.status!='Draft'"
+  },
+  {
+   "fieldname": "run_section",
+   "fieldtype": "Section Break",
+   "label": "Run Status"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Draft\nPreviewed\nQueued\nRunning\nCompleted\nCompleted with Errors\nFailed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "requested_by",
+   "fieldtype": "Link",
+   "label": "Requested By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "requested_at",
+   "fieldtype": "Datetime",
+   "label": "Requested At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "completed_at",
+   "fieldtype": "Datetime",
+   "label": "Completed At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "summary_section",
+   "fieldtype": "Section Break",
+   "label": "Summary"
+  },
+  {
+   "fieldname": "scanned_count",
+   "fieldtype": "Int",
+   "label": "Auto Absences Scanned",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_candidates",
+   "fieldtype": "Int",
+   "label": "Ready to Correct",
+   "read_only": 1
+  },
+  {
+   "fieldname": "summary_column_break",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "corrected_count",
+   "fieldtype": "Int",
+   "label": "Corrected",
+   "read_only": 1
+  },
+  {
+   "fieldname": "skipped_count",
+   "fieldtype": "Int",
+   "label": "Skipped",
+   "read_only": 1
+  },
+  {
+   "fieldname": "failed_count",
+   "fieldtype": "Int",
+   "label": "Failed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "results_section",
+   "fieldtype": "Section Break",
+   "label": "Results"
+  },
+  {
+   "fieldname": "results",
+   "fieldtype": "Table",
+   "label": "Correction Results",
+   "options": "Attendance Correction Result",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.error_log",
+   "fieldname": "error_log",
+   "fieldtype": "Long Text",
+   "label": "Error",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-15 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Attendance Correction Tool",
+ "name": "Attendance Correction Run",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "name",
+ "track_changes": 1
+}

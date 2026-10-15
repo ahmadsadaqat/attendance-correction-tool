@@ -2,6 +2,21 @@
 
 Attendance Correction Tool for HRMS frappe
 
+This app safely recalculates auto-marked absences after delayed Employee Checkins arrive.
+
+### Usage
+
+1. Open **Attendance Correction Tool > Attendance Correction Run**.
+2. Create a run and select the company, date range, and optional employee or shift.
+3. Save, then click **Preview Corrections**.
+4. Review the calculated status, working hours, and check-in count.
+5. Click **Run Corrections** to process the records in the background.
+
+The tool only selects submitted Absent records carrying HRMS's standard auto-absence comment. It does
+not overwrite manually marked attendance. During correction, the original Attendance is cancelled, a
+new submitted Attendance is calculated using the Shift Type rules, and the matching Employee Checkins
+are linked to the new record. Each run retains a row-by-row audit trail.
+
 ### Installation
 
 You can install this app using the [bench](https://github.com/frappe/bench) CLI:
